@@ -22,19 +22,23 @@ Configure these environment variables (never commit database passwords):
 | `DB_NAME` | `defaultdb` |
 | `DB_USERNAME` | `avnadmin` |
 | `DB_PASSWORD` | Set privately in the hosting dashboard; never commit it |
-| `PORT` | Optional server port; defaults to `8080` |
+| `PORT` | Render supplies its web port (normally `10000`); defaults to `8080` locally |
 | `CORS_ALLOWED_ORIGIN` | `https://kandhalavarshithareddy-alt.github.io` |
 
 `DATABASE_URL` takes precedence. If omitted, the application builds a JDBC URL from `DB_HOST`, `DB_PORT`, and `DB_NAME`. Include `?sslMode=REQUIRED` in the URL for Aiven. Local development origins on ports 5500 are also allowed; no credentials are enabled for CORS. A local database is not reachable from the cloud by default.
 
-## Build and run
+## Build and run locally
 
 ```powershell
 mvn clean package
 java -jar target/studyplanner-0.0.1-SNAPSHOT.jar
 ```
 
-Koyeb can build this repository with `mvn clean package` and start it with the `java -jar` command above. Select Java 17; `system.properties` pins that runtime. The health check at `/api/health` returns `UP` only when the task database is reachable. Koyeb currently lists one free web service (512 MB RAM, 0.1 vCPU, Frankfurt or Washington, D.C.). Its signup requires a payment card, and its pricing FAQ describes a $29 authorization hold and possible plan charges. Confirm the account is on the free Starter plan before creating a service; do not upgrade without approval.
+## Render deployment
+
+Connect this existing GitHub repository to Render as a **Web Service**, choose the **Docker** runtime, set the Dockerfile path to `./Dockerfile`, and select the **Free** compute plan. The Dockerfile builds the existing project with Java 17 and Maven (`mvn -B clean package`), then starts it with `java -jar /app/app.jar`. Render supplies `PORT` (default `10000`), which Spring Boot reads from `application.properties`. Set the health check path to `/api/health`.
+
+Add the database environment variables in the Render dashboard. Set `DB_PASSWORD` as a private secret and set `CORS_ALLOWED_ORIGIN` to the final Vercel production origin after Vercel assigns its URL. Do not put credentials in this repository. Render's Free web services use 512 MB RAM and 0.1 CPU, spin down after 15 minutes without inbound requests, and have a 750-hour monthly workspace limit. They can take about a minute to wake. If no payment method is attached, usage-limit overages suspend free services rather than charging them. Free services are intended for testing and hobby projects, not production guarantees.
 
 ## API
 
