@@ -9,7 +9,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@CrossOrigin(origins = "${app.cors.allowed-origin}")
+@CrossOrigin(origins = {
+    "${app.cors.allowed-origin:https://kandhalavarshithareddy-alt.github.io}",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500"
+})
 public class StudyTaskController {
     private final StudyTaskService service;
 
