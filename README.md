@@ -17,15 +17,18 @@ Configure these environment variables (never commit database passwords):
 | Variable | Value |
 | --- | --- |
 | `DATABASE_URL` | `jdbc:mysql://mysql-2ded90d3-kandhalavarshithareddy-24c7.l.aivencloud.com:18515/defaultdb?sslMode=REQUIRED` |
+| `SPRING_DATASOURCE_URL` | Optional alias when `DATABASE_URL` is not set |
 | `DB_HOST` | `mysql-2ded90d3-kandhalavarshithareddy-24c7.l.aivencloud.com` |
 | `DB_PORT` | `18515` |
 | `DB_NAME` | `defaultdb` |
 | `DB_USERNAME` | `avnadmin` |
+| `SPRING_DATASOURCE_USERNAME` | Optional alias when `DB_USERNAME` is not set |
 | `DB_PASSWORD` | Set privately in the hosting dashboard; never commit it |
+| `SPRING_DATASOURCE_PASSWORD` | Optional alias when `DB_PASSWORD` is not set |
 | `PORT` | Render supplies its web port (normally `10000`); defaults to `8080` locally |
 | `CORS_ALLOWED_ORIGIN` | `https://kandhalavarshithareddy-alt.github.io` |
 
-`DATABASE_URL` takes precedence. If omitted, the application builds a JDBC URL from `DB_HOST`, `DB_PORT`, and `DB_NAME`. Include `?sslMode=REQUIRED` in the URL for Aiven. Local development origins on ports 5500 are also allowed; no credentials are enabled for CORS. A local database is not reachable from the cloud by default.
+`DATABASE_URL` takes precedence over `SPRING_DATASOURCE_URL`. If both are omitted, the application builds a JDBC URL from `DB_HOST`, `DB_PORT`, and `DB_NAME`. `DB_USERNAME` takes precedence over `SPRING_DATASOURCE_USERNAME`; `DB_PASSWORD` takes precedence over `SPRING_DATASOURCE_PASSWORD`. There is intentionally no hard-coded `root` username fallback: set `DB_USERNAME=root` (and your local password via `DB_PASSWORD`) when running against a local MySQL configured that way. Include `?sslMode=REQUIRED` in the Aiven URL. Local development origins on ports 5500 are also allowed; no credentials are enabled for CORS. A local database is not reachable from the cloud by default.
 
 ## Build and run locally
 
