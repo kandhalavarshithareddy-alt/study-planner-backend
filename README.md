@@ -4,7 +4,7 @@ Spring Boot 3.5, Java 17, Maven, Spring Data JPA, and MySQL.
 
 ## Database
 
-Create the database if it does not already exist:
+For local development, create `studyplanner` if needed. For the supplied Aiven service, use its existing `defaultdb` database; do not rename or replace it:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS studyplanner;
